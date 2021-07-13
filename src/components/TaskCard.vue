@@ -1,67 +1,85 @@
 <template>
-  <draggable :list="column.tasks" itemKey="name">
-    <template #item="{ element }">
-      <div>{{ element.date }}</div>
-      <!-- <div class="taskCard">
+  <draggable :list="tasks" group="tasks" itemKey="name" ghost-class="ghost">
+    <template #item="{ element, index }">
+      <div class="taskCard">
         <div class="headerTask">
           <h3 class="headerTask__title">Задача №{{ element.id }}</h3>
           <badge
             :class="[
-              task.priority == 1 ? 'firstPriority' : '',
-              task.priority == 2 ? 'secondPriority' : '',
-              task.priority == 3 ? 'thirdPriority' : '',
+              element.priority == 1 ? 'firstPriority' : '',
+              element.priority == 2 ? 'secondPriority' : '',
+              element.priority == 3 ? 'thirdPriority' : '',
             ]"
-            >{{ task.priority }}</badge
+            >{{ element.priority }}</badge
           >
         </div>
         <div class="descriptionTask">
-          <p>Lorem sdn vasdjnk vsjdv sjldv sdjv dsv dsjv</p>
-          <span>{{ task.date }}</span>
+          <p>{{ element.desc }}</p>
+          <span>{{ element.date }}</span>
         </div>
         <div class="controls">
-          <button class="controlBtn left">
+          <button
+            :disabled="columnName == 'plan'"
+            :class="columnName == 'plan' ? 'disabledBtn' : ''"
+            class="controlBtn left"
+            @click="move(left, index, element)"
+          >
             <img src="../assets/left-arrow.svg" alt="" />
           </button>
-          <button class="controlBtn edit">Edit</button>
-          <button class="controlBtn right">
-            <img src="../assets/right-arrow.svg" alt="" />
+          <button
+            class="controlBtn edit"
+            @click="showModal(columnName, index, element)"
+          >
+            Edit
+          </button>
+          <button class="controlBtn right" @click="move(right, index, element)">
+            <img v-if="columnName == 'Done'" src="../assets/close.svg" alt="" />
+            <img v-else src="../assets/right-arrow.svg" alt="" />
           </button>
         </div>
-      </div> -->
+      </div>
     </template>
   </draggable>
 </template>
 
 <script>
-// import Badge from "./Badge.vue";
+import Badge from "./Badge.vue";
 import draggable from "vuedraggable";
 export default {
   components: {
     draggable,
-    // Badge,
+    Badge,
   },
   props: {
-    task: {
-      type: Object,
-      default: () => ({}),
-    },
+    tasks: Object,
+    columnName: String,
+    left: String,
+    right: String,
   },
-  computed: {
-    badgeColor() {
-      const mappings = {
-        Design: "purple",
-        "Feature Request": "teal",
-        Backend: "blue",
-        QA: "green",
-        default: "teal",
-      };
-      return mappings[this.task.type] || mappings.default;
+  emits: ["move", "showModal"],
+  methods: {
+    move(direction, index, element) {
+      this.$emit("move", {
+        direction: direction,
+        index: index,
+        element: element,
+      });
+    },
+    showModal(columnName, index, element) {
+      this.$emit("showModal", {
+        columnName: columnName,
+        index: index,
+        element: element,
+      });
     },
   },
 };
 </script>
 
 <style>
+.ghost {
+  opacity: 0.3;
+}
 .controlBtn {
   cursor: pointer;
   width: 50px;
@@ -69,6 +87,9 @@ export default {
   border: 2px solid #1a99ff;
   background-color: white;
   border-radius: 10px;
+}
+.disabledBtn {
+  opacity: 0.2;
 }
 .controls {
   display: flex;
