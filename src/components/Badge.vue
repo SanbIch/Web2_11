@@ -13,6 +13,7 @@
   align-items: center;
   border-radius: 50%;
   border: 2px solid #1a99ff;
+  color: black;
 }
 .firstPriority {
   background-color: #ffa4a4;

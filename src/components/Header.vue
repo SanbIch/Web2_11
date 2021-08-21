@@ -3,7 +3,7 @@
     <img src="../assets/headerLogo.svg" alt="logo" class="logo" />
     <h1 class="headerText">Название проекта</h1>
     <div class="toggleBtn">
-      <p>{{ mode == "dark" ? "Теманая тема" : "Светлая тема" }}</p>
+      <p>{{ mode == "dark" ? "Темная тема" : "Светлая тема" }}</p>
       <Toggle :mode="mode" @toggle="$emit('toggle')" />
     </div>
   </header>
@@ -13,6 +13,7 @@
 import Toggle from "@/components/Toggle";
 
 export default {
+  props: ["mode"],
   components: {
     Toggle,
   },

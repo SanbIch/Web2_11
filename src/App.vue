@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header />
+    <Header :mode="mode" @toggle="toggle" :class="'header-' + mode" />
     <div class="mainContainer">
       <button type="button" class="createTaskBtn" @click="showModal">
         Создать задачу
@@ -10,9 +10,13 @@
         v-on:returned="addNewTask($event)"
         :action="action"
         :newTask="newTask"
+        :mode="mode"
       ></CreateTaskWind>
       <div class="columns">
-        <div class="column">
+        <div
+          class="column"
+          :class="mode == 'light' ? 'lightColumn' : 'darkColumn'"
+        >
           <h2 class="columnTitle">
             {{ columns[0].title }} ({{ columns[0].plan.length }})
           </h2>
@@ -23,9 +27,13 @@
             right="righttoInWork"
             v-on:move="moveTask($event)"
             v-on:showModal="showEditModal($event)"
+            :mode="mode"
           ></TaskCard>
         </div>
-        <div class="column">
+        <div
+          class="column"
+          :class="mode == 'light' ? 'lightColumn' : 'darkColumn'"
+        >
           <h2 class="columnTitle">
             {{ columns[1].title }} ({{ columns[1].inWork.length }})
           </h2>
@@ -36,9 +44,13 @@
             right="rignttoDone"
             v-on:move="moveTask($event)"
             v-on:showModal="showEditModal($event)"
+            :mode="mode"
           ></TaskCard>
         </div>
-        <div class="column">
+        <div
+          class="column"
+          :class="mode == 'light' ? 'lightColumn' : 'darkColumn'"
+        >
           <h2 class="columnTitle">
             {{ columns[2].title }} ({{ columns[2].Done.length }})
           </h2>
@@ -49,6 +61,7 @@
             right="rightdoneTask"
             v-on:move="moveTask($event)"
             v-on:showModal="showEditModal($event)"
+            :mode="mode"
           ></TaskCard>
         </div>
       </div>
@@ -69,6 +82,7 @@ export default {
   },
   data() {
     return {
+      mode: "light",
       nextid: 8,
       action: "",
       newTask: {
@@ -147,9 +161,18 @@ export default {
       this.newTask.priority = "выберите приоритет";
       this.newTask.columnName = null;
     },
+    toggle() {
+      if (this.mode === "dark") {
+        this.mode = "light";
+        document.body.classList.remove("bg-dark");
+      } else {
+        this.mode = "dark";
+        document.body.classList.add("bg-dark");
+      }
+    },
     addNewTask(task) {
       switch (task.action) {
-        case 'add':
+        case "add":
           this.columns[0].plan.unshift({
             id: this.nextid,
             desc: task.desc,
@@ -158,25 +181,21 @@ export default {
           });
           this.nextid++;
           break;
-        case 'edit':
-          if (task.columnName == "plan"){
+        case "edit":
+          if (task.columnName == "plan") {
             this.columns[0].plan[task.index].desc = task.desc;
             this.columns[0].plan[task.index].date = task.date;
             this.columns[0].plan[task.index].priority = task.priority;
-          }
-          else if (task.columnName == "inWork"){
+          } else if (task.columnName == "inWork") {
             this.columns[1].inWork[task.index].desc = task.desc;
             this.columns[1].inWork[task.index].date = task.date;
             this.columns[1].inWork[task.index].priority = task.priority;
-          }
-          else if (task.columnName == "done"){
+          } else if (task.columnName == "done") {
             this.columns[2].Done[task.index].desc = task.desc;
             this.columns[2].Done[task.index].date = task.date;
             this.columns[2].Done[task.index].priority = task.priority;
           }
-
       }
-      
     },
     moveTask(task) {
       switch (task.direction) {
@@ -219,6 +238,10 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap");
+.bg-dark {
+  background-color: rgb(97, 97, 97);
+  transition: background-color 0.5s ease-in-out;
+}
 .mainContainer {
   padding: 0 15%;
 }
@@ -243,9 +266,17 @@ export default {
   justify-content: space-between;
 }
 .column {
-  background-color: #f1f9ff;
   padding: 0 20px;
   width: 26%;
+  transition: background-color 0.5s ease-in-out;
+}
+.lightColumn {
+  background-color: #f1f9ff;
+  color: black;
+}
+.darkColumn {
+  background-color: rgb(70, 70, 70);
+  color: white;
 }
 body {
   margin: 0;

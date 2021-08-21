@@ -53,10 +53,10 @@ export default {
 }
 
 input:checked + .toggler {
-  background: #2196f3;
+  background: #1a76c0;
 }
 input:focus + toggler {
-  box-shadow: 0 0 2px #2196f3;
+  box-shadow: 0 0 2px #1a76c0;
 }
 
 input:checked + .toggler:before {

@@ -58,6 +58,13 @@ export default {
       newTask1: this.newTask,
     };
   },
+  mounted() {
+    document.body.addEventListener("keyup", (e) => {
+      if (e.code == "Escape") {
+        this.closeModal(); // how to hide any open modal?
+      }
+    });
+  },
   methods: {
     closeModal: function () {
       this.show = false;
@@ -110,7 +117,7 @@ export default {
   left: 0px;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
