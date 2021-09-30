@@ -97,7 +97,7 @@ export default {
           plan: [
             {
               id: 7,
-              desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+              desc: "Lorem ваыsum dolor sit amet consectetur adipisicing elit.",
               date: "14.14.1414 14:14:25",
               priority: 1,
             },
