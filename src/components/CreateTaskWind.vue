@@ -1,11 +1,14 @@
 <template>
   <transition name="modal">
     <div v-if="show" class="modal-shadow" @click.self="closeModal">
-      <div class="modal">
+      <div class="modal" :class="mode == 'light' ? 'lightWind' : 'darkWind'">
         <div class="modalcloseBtnContainter">
           <button class="modalcloseBtn" @click="closeModal">&#10006;</button>
         </div>
-        <div class="taskInfContainer">
+        <div
+          class="taskInfContainer"
+          :class="mode == 'light' ? 'lightInfContainer' : 'darkInfContainer'"
+        >
           <label for="">
             Описание
             <textarea
@@ -20,8 +23,8 @@
           </label>
           <label for="">
             Приоритет
-            <select v-model="newTask1.priority">
-              <option selected disabled>выберите приоритет</option>
+            <select v-model="newTask1.priority" required>
+              <option disabled>выберите приоритет</option>
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -50,6 +53,7 @@ export default {
     columns: Object,
     action: String,
     newTask: Object,
+    mode: String,
   },
   emits: ["returned"],
   data: function () {
@@ -125,10 +129,15 @@ export default {
 .modal {
   width: 30%;
   height: 300px;
-  background-color: white;
   padding: 30px 30px 10px 30px;
   border: 2px solid #1a99ff;
   border-radius: 5px;
+}
+.lightWind {
+  background-color: white;
+}
+.darkWind {
+  background-color: rgb(97, 97, 97);
 }
 .modalcloseBtnContainter {
   display: flex;
@@ -154,14 +163,26 @@ export default {
 .taskInfContainer {
   height: 100%;
   justify-content: space-around;
-  color: #1a76c2;
   font-weight: 500;
+}
+.lightInfContainer {
+  color: #1a76c2;
+}
+.darkInfContainer {
+  color: white;
 }
 .taskInfContainer label textarea,
 .taskInfContainer label select {
   margin-top: 10px;
 }
-
+.darkInfContainer label textarea,
+.darkInfContainer label select {
+  background-color: rgb(70, 70, 70);
+  color: white;
+}
+.darkInfContainer label textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.5s;
