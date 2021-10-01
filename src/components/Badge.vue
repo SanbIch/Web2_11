@@ -1,11 +1,11 @@
 <template>
-  <div class="prioritySign">
+  <div class="task-card-header__priority-sign">
     <slot></slot>
   </div>
 </template>
 
 <style>
-.prioritySign {
+.task-card-header__priority-sign {
   width: 20px;
   height: 20px;
   display: flex;
@@ -14,14 +14,5 @@
   border-radius: 50%;
   border: 2px solid #1a99ff;
   color: black;
-}
-.firstPriority {
-  background-color: #ffa4a4;
-}
-.secondPriority {
-  background-color: #fffc9f;
-}
-.thirdPriority {
-  background-color: #adedc9;
 }
 </style>

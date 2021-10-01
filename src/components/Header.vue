@@ -1,8 +1,8 @@
 <template>
-  <header>
-    <img src="../assets/headerLogo.svg" alt="logo" class="logo" />
-    <h1 class="headerText">Название проекта</h1>
-    <div class="toggleBtn">
+  <header class="header">
+    <img src="../assets/headerLogo.svg" alt="logo" class="header__logo" />
+    <h1 class="header__project-name">Название проекта</h1>
+    <div class="header__toggle-btn">
       <p>{{ mode == "dark" ? "Темная тема" : "Светлая тема" }}</p>
       <Toggle :mode="mode" @toggle="$emit('toggle')" />
     </div>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style>
-header {
+.header {
   background-color: #2699fb;
   color: white;
   display: flex;
@@ -34,14 +34,14 @@ header {
   justify-content: space-between;
   padding: 0 10%;
 }
-.headerText {
+.header__logo {
+  width: 40px;
+}
+.header__project-name {
   font-size: 1.5rem;
   font-weight: 400;
 }
-.logo {
-  width: 40px;
-}
-.toggleBtn {
+.header__toggle-btn {
   display: flex;
   align-items: center;
 }

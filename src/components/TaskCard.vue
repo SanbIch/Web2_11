@@ -1,44 +1,65 @@
 <template>
   <draggable :list="tasks" group="tasks" itemKey="name" ghost-class="ghost">
     <template #item="{ element, index }">
-      <div class="taskCard" :class="mode == 'light' ? 'lightTask' : 'darkTask'">
-        <div class="headerTask">
-          <h3 class="headerTask__title">Задача №{{ element.id }}</h3>
+      <div
+        class="task-card"
+        :class="mode == 'light' ? 'task-card_light' : 'task-card_dark'"
+      >
+        <div class="task-card-header">
+          <h3 class="task-card-header__title">Задача №{{ element.id }}</h3>
           <badge
             :class="[
-              element.priority == 1 ? 'firstPriority' : '',
-              element.priority == 2 ? 'secondPriority' : '',
-              element.priority == 3 ? 'thirdPriority' : '',
+              element.priority == 1
+                ? 'task-card-header__priority-sign_first-priority'
+                : '',
+              element.priority == 2
+                ? 'task-card-header__priority-sign_second-priority'
+                : '',
+              element.priority == 3
+                ? 'task-card-header__priority-sign_third-priority'
+                : '',
             ]"
             >{{ element.priority }}</badge
           >
         </div>
-        <div class="descriptionTask">
+        <div class="task-card__description-task">
           <p>{{ element.desc }}</p>
           <span>{{ element.date }}</span>
         </div>
-        <div class="controls">
+        <div class="task-card-controls">
           <button
             :disabled="columnName == 'plan'"
             :class="[
-              columnName == 'plan' ? 'disabledBtn' : '',
-              mode == 'light' ? 'lightTask' : 'darkTask',
+              columnName == 'plan'
+                ? 'task-card-controls__control-btn_disabled'
+                : '',
+              mode == 'light'
+                ? 'task-card-controls__control-btn_light'
+                : 'task-card-controls__control-btn_dark',
             ]"
-            class="controlBtn left"
+            class="task-card-controls__control-btn"
             @click="move(left, index, element)"
           >
             <img src="../assets/left-arrow.svg" alt="" />
           </button>
           <button
-            class="controlBtn edit"
-            :class="mode == 'light' ? 'lightTask' : 'darkTask'"
+            class="task-card-controls__control-btn"
+            :class="
+              mode == 'light'
+                ? 'task-card-controls__control-btn_light'
+                : 'task-card-controls__control-btn_dark'
+            "
             @click="showModal(columnName, index, element)"
           >
             Edit
           </button>
           <button
-            class="controlBtn right"
-            :class="mode == 'light' ? 'lightTask' : 'darkTask'"
+            class="task-card-controls__control-btn"
+            :class="
+              mode == 'light'
+                ? 'task-card-controls__control-btn_light'
+                : 'task-card-controls__control-btn_dark'
+            "
             @click="move(right, index, element)"
           >
             <img v-if="columnName == 'Done'" src="../assets/close.svg" alt="" />
@@ -89,14 +110,45 @@ export default {
 .ghost {
   opacity: 0.3;
 }
-.lightTask {
+.task-card {
+  border: 2px solid #1a99ff;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 10px;
+  transition: background-color 0.5s ease-in-out;
+}
+.task-card_light,
+.task-card-controls__control-btn_light {
   background-color: white;
 }
-.darkTask {
+.task-card_dark,
+.task-card-controls__control-btn_dark {
   background-color: rgb(58, 58, 58);
   color: white;
 }
-.controlBtn {
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.task-card-header__title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.task-card-header__priority-sign_first-priority {
+  background-color: #ffa4a4;
+}
+.task-card-header__priority-sign_second-priority {
+  background-color: #fffc9f;
+}
+.task-card-header__priority-sign_third-priority {
+  background-color: #adedc9;
+}
+.task-card-controls {
+  display: flex;
+  justify-content: space-between;
+}
+.task-card-controls__control-btn {
   cursor: pointer;
   width: 50px;
   height: 50px;
@@ -104,31 +156,11 @@ export default {
   border-radius: 10px;
   transition: background-color 0.5s ease-in-out;
 }
-.disabledBtn {
+.task-card-controls__control-btn_disabled {
   border: 2px solid rgba(26, 153, 255, 0.4);
   cursor: default;
 }
-.disabledBtn img {
-  opacity: 0.4;
-}
-.controls {
-  display: flex;
-  justify-content: space-between;
-}
-.taskCard {
-  border: 2px solid #1a99ff;
-  border-radius: 5px;
-  padding: 20px;
-  margin-bottom: 10px;
-  transition: background-color 0.5s ease-in-out;
-}
-.headerTask {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.headerTask__title {
-  margin: 0;
-  font-size: 1.2rem;
+.task-card-controls__control-btn_disabled img {
+  opacity: 1;
 }
 </style>

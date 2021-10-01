@@ -1,13 +1,22 @@
 <template>
   <transition name="modal">
     <div v-if="show" class="modal-shadow" @click.self="closeModal">
-      <div class="modal" :class="mode == 'light' ? 'lightWind' : 'darkWind'">
-        <div class="modalcloseBtnContainter">
-          <button class="modalcloseBtn" @click="closeModal">&#10006;</button>
+      <div
+        class="modal-window"
+        :class="mode == 'light' ? 'modal-window_light' : 'modal-window_dark'"
+      >
+        <div class="close-btn-containter">
+          <button class="close-btn-containter__close-btn" @click="closeModal">
+            &#10006;
+          </button>
         </div>
         <div
-          class="taskInfContainer"
-          :class="mode == 'light' ? 'lightInfContainer' : 'darkInfContainer'"
+          class="task-info-container"
+          :class="
+            mode == 'light'
+              ? 'task-info-container_light'
+              : 'task-info-container_dark'
+          "
         >
           <label for="">
             Описание
@@ -31,14 +40,17 @@
             </select>
           </label>
           <button
-            v-if="action == 'add'"
-            class="addTaskBtn"
+            class="task-info-container__add-task-btn"
+            :class="
+              disabledBtn == 1
+                ? 'task-info-container__add-task-btn_disabled'
+                : 'task-info-container__add-task-btn_active'
+            "
             v-on:click="sendBack(action)"
+            type="submit"
+            :disabled="disabledBtn"
           >
-            Сохранить
-          </button>
-          <button v-else class="addTaskBtn" v-on:click="sendBack(action)">
-            Сохранить
+            {{ btnText }}
           </button>
         </div>
       </div>
@@ -61,6 +73,20 @@ export default {
       show: false,
       newTask1: this.newTask,
     };
+  },
+  computed: {
+    btnText: function () {
+      if (this.action == "add") return "Создать";
+      else return "Сохранить";
+    },
+    disabledBtn: function () {
+      if (
+        this.newTask1.desc == null ||
+        this.newTask1.priority == "выберите приоритет"
+      )
+        return 1;
+      else return 0;
+    },
   },
   mounted() {
     document.body.addEventListener("keyup", (e) => {
@@ -126,25 +152,25 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.modal {
+.modal-window {
   width: 30%;
   height: 300px;
   padding: 30px 30px 10px 30px;
   border: 2px solid #1a99ff;
   border-radius: 5px;
 }
-.lightWind {
+.modal-window_light {
   background-color: white;
 }
-.darkWind {
+.modal-window_dark {
   background-color: rgb(97, 97, 97);
 }
-.modalcloseBtnContainter {
+.close-btn-containter {
   display: flex;
   justify-content: flex-end;
   margin: -20px -20px 0 0;
 }
-.modalcloseBtn {
+.close-btn-containter__close-btn {
   width: 25px;
   height: 25px;
   border: 2px solid #1a99ff;
@@ -155,32 +181,32 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.taskInfContainer,
-.taskInfContainer label {
+.task-info-container,
+.task-info-container label {
   display: flex;
   flex-direction: column;
 }
-.taskInfContainer {
+.task-info-container {
   height: 100%;
   justify-content: space-around;
   font-weight: 500;
 }
-.lightInfContainer {
+.task-info-container_light {
   color: #1a76c2;
 }
-.darkInfContainer {
+.task-info-container_dark {
   color: white;
 }
-.taskInfContainer label textarea,
-.taskInfContainer label select {
+.task-info-container label textarea,
+.task-info-container label select {
   margin-top: 10px;
 }
-.darkInfContainer label textarea,
-.darkInfContainer label select {
+.task-info-container_dark label textarea,
+.task-info-container_dark label select {
   background-color: rgb(70, 70, 70);
   color: white;
 }
-.darkInfContainer label textarea::placeholder {
+.task-info-container_dark label textarea::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 .modal-enter-active,
@@ -192,7 +218,7 @@ export default {
 .modal-leave-to {
   opacity: 0;
 }
-.addTaskBtn {
+.task-info-container__add-task-btn {
   width: 100px;
   padding: 10px;
   margin: 0 auto;
@@ -201,7 +227,11 @@ export default {
   color: white;
   cursor: pointer;
 }
-.addTaskBtn:hover {
+.task-info-container__add-task-btn_disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.task-info-container__add-task-btn_active:hover {
   background-color: #218fe9;
 }
 </style>

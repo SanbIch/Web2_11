@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-    <Header :mode="mode" @toggle="toggle" :class="'header-' + mode" />
-    <div class="mainContainer">
-      <button type="button" class="createTaskBtn" @click="showModal">
+    <Header :mode="mode" @toggle="toggle" />
+    <div class="main-сontainer">
+      <button
+        type="button"
+        class="main-сontainer__create-task-btn"
+        @click="showModal"
+      >
         Создать задачу
       </button>
       <CreateTaskWind
@@ -14,10 +18,12 @@
       ></CreateTaskWind>
       <div class="columns">
         <div
-          class="column"
-          :class="mode == 'light' ? 'lightColumn' : 'darkColumn'"
+          class="columns-column"
+          :class="
+            mode == 'light' ? 'columns-column_light' : 'columns-column_dark'
+          "
         >
-          <h2 class="columnTitle">
+          <h2 class="columns-column__column-title">
             {{ columns[0].title }} ({{ columns[0].plan.length }})
           </h2>
           <TaskCard
@@ -31,10 +37,12 @@
           ></TaskCard>
         </div>
         <div
-          class="column"
-          :class="mode == 'light' ? 'lightColumn' : 'darkColumn'"
+          class="columns-column"
+          :class="
+            mode == 'light' ? 'columns-column_light' : 'columns-column_dark'
+          "
         >
-          <h2 class="columnTitle">
+          <h2 class="columns-column__column-title">
             {{ columns[1].title }} ({{ columns[1].inWork.length }})
           </h2>
           <TaskCard
@@ -48,10 +56,12 @@
           ></TaskCard>
         </div>
         <div
-          class="column"
-          :class="mode == 'light' ? 'lightColumn' : 'darkColumn'"
+          class="columns-column"
+          :class="
+            mode == 'light' ? 'columns-column_light' : 'columns-column_dark'
+          "
         >
-          <h2 class="columnTitle">
+          <h2 class="columns-column__column-title">
             {{ columns[2].title }} ({{ columns[2].Done.length }})
           </h2>
           <TaskCard
@@ -242,41 +252,41 @@ export default {
   background-color: rgb(97, 97, 97);
   transition: background-color 0.5s ease-in-out;
 }
-.mainContainer {
+.main-сontainer {
   padding: 0 15%;
 }
-.createTaskBtn {
+.main-сontainer__create-task-btn {
   padding: 10px;
   background-color: #219afb;
   border: none;
   color: white;
   cursor: pointer;
 }
-.createTaskBtn:hover {
+.main-сontainer__create-task-btn:hover {
   background-color: #218fe9;
 }
-.createTaskBtn:active {
+.main-сontainer__create-task-btn:active {
   transform: scale(0.95, 0.95);
-}
-.columnTitle {
-  text-align: center;
 }
 .columns {
   display: flex;
   justify-content: space-between;
 }
-.column {
+.columns-column {
   padding: 0 20px;
   width: 26%;
   transition: background-color 0.5s ease-in-out;
 }
-.lightColumn {
+.columns-column_light {
   background-color: #f1f9ff;
   color: black;
 }
-.darkColumn {
+.columns-column_dark {
   background-color: rgb(70, 70, 70);
   color: white;
+}
+.columns-column__column-title {
+  text-align: center;
 }
 body {
   margin: 0;
